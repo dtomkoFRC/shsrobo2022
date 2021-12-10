@@ -112,7 +112,6 @@ public class RedDuck extends LinearOpMode {
                 setStrafe(.5);
             }
 
-
             sleep(30000);
             //Start Sensor Loop
 
