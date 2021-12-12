@@ -80,10 +80,11 @@ public class RedDuck extends LinearOpMode {
         BackRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         ArmMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         Turret.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-
+        Duck.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         //Distance Sensor Initial Telemetry
         Distance = hardwareMap.get(DistanceSensor.class, "distance");
+
 
 
         // Wait for the game to start (driver presses PLAY)
@@ -105,16 +106,83 @@ public class RedDuck extends LinearOpMode {
         while (opModeIsActive() && runtime.seconds() > 1.0) {
 
             // Lift ArmMotor
-            runArm(1, 400);
+//            runArm(1, 800);
+//            sleep(500);
+
 
             //Strafe towards BC1(Bar Code 1/Mid)
-            while (BackLeftDrive.getCurrentPosition() < DRIVE_MOTOR_MAX_TICKS * 5) {
-                setStrafe(.5);
+            while (BackLeftDrive.getCurrentPosition() > -DRIVE_MOTOR_MAX_TICKS * 1.75) {
+                setStrafe(-.5);
+            }
+            setStrafe(0);
+            //Start Sensor Loop
+            Boolean[] array = new Boolean[3];
+            array[0] = false;
+            array[1] = false;
+            array[2] = false;
+            //Sense BCE1
+            if(Distance.getDistance(DistanceUnit.CM) < 20) {
+                array[1] = true;
+            }
+            telemetry.addData("Middle Location", array[1]);
+            telemetry.update();
+
+            //Froward to BCE2
+            resetDriveEncoders();
+            while (BackLeftDrive.getCurrentPosition() > -DRIVE_MOTOR_MAX_TICKS * 0.625) {
+                setDrive(-.2);
+            }
+            setDrive(0);
+            //Sense BCE2
+             if(Distance.getDistance(DistanceUnit.CM) < 20) {
+                 array[2] = true;
+             }
+            telemetry.addData("Last Location", array[2]);
+            telemetry.update();
+            //State BCE3
+            if(array[1] == false && array[2] == false) {
+                array[0] = true;
             }
 
-            sleep(30000);
-            //Start Sensor Loop
+            //Forward to wall
+            resetDriveEncoders();
+            while (BackLeftDrive.getCurrentPosition() > -DRIVE_MOTOR_MAX_TICKS * 2) {
+                setDrive(-.5);
+            }
+                setDrive(0);
 
+            //Strafe to Duck
+            resetDriveEncoders();
+            while (BackLeftDrive.getCurrentPosition() < DRIVE_MOTOR_MAX_TICKS * 0.95) {
+                            setStrafe(.5);
+            }
+            setStrafe(0);
+
+            //Deliver Duck
+            Duck.setPower(-0.25);
+            sleep(3700);
+            Duck.setPower(0);
+
+            //Forward into wall
+            resetDriveEncoders();
+            while (BackLeftDrive.getCurrentPosition() > -DRIVE_MOTOR_MAX_TICKS * 0.15) {
+                setDrive(-.5);
+            }
+            setDrive(0);
+
+            //Move Back to Cargo Loader
+            resetDriveEncoders();
+            while (BackLeftDrive.getCurrentPosition() < DRIVE_MOTOR_MAX_TICKS * 4.2) {
+                setDrive(.5);
+            }
+            setDrive(0);
+            //Strafe Towards Cargo Loader
+            resetDriveEncoders();
+            while (BackLeftDrive.getCurrentPosition() > -DRIVE_MOTOR_MAX_TICKS * 1.25) {
+                setStrafe(-.5);
+            }
+            setStrafe(0);
+            sleep(30000);
         } //END OF MAIN WHILE LOOP
 
 
@@ -124,8 +192,8 @@ public class RedDuck extends LinearOpMode {
         ArmMotor.setTargetPosition(position);
         ArmMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         ArmMotor.setPower(power);
-        while(ArmMotor.getCurrentPosition() < position-20
-                || ArmMotor.getCurrentPosition() > position+20) {
+        while(ArmMotor.getCurrentPosition() < position-100
+                || ArmMotor.getCurrentPosition() > position+100) {
             telemetry.addData("ARM ENCODER", ArmMotor.getCurrentPosition());
             telemetry.update();
             sleep(100);
@@ -133,11 +201,33 @@ public class RedDuck extends LinearOpMode {
     }
     //Strafe
     private void setStrafe(double power) {
+        FrontLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        FrontRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        BackLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        BackRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         FrontLeftDrive.setPower(-power);
         FrontRightDrive.setPower(-power);
         BackLeftDrive.setPower(power);
         BackRightDrive.setPower(power);
     }
+    // Drive
+    private void setDrive(double power) {
+        FrontLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        FrontRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        BackLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        BackRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        FrontLeftDrive.setPower(power);
+        FrontRightDrive.setPower(-power);
+        BackLeftDrive.setPower(power);
+        BackRightDrive.setPower(-power);
+    }
 
+    //Reset The Encoders
+    private void resetDriveEncoders() {
+        FrontLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        FrontRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BackLeftDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        BackRightDrive.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+    }
 } //END OF CLASS
 
