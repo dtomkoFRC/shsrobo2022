@@ -178,9 +178,9 @@ public class RedDuck extends LinearOpMode {
             setDrive(0);
 
             if (array[0] == true) {
-                runArm(1, 400);
+                runArm(1, 625);
                 resetDriveEncoders();
-                while (BackLeftDrive.getCurrentPosition() > -DRIVE_MOTOR_MAX_TICKS * 0.7) {
+                while (BackLeftDrive.getCurrentPosition() > -DRIVE_MOTOR_MAX_TICKS * 0.85) {
                     setStrafe(-.5);
                 }
                 setStrafe(0);
