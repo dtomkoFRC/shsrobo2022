@@ -129,8 +129,8 @@ public class BlueDuck extends LinearOpMode {
 
             //Froward to BCE2
             resetDriveEncoders();
-            while (BackLeftDrive.getCurrentPosition() > -DRIVE_MOTOR_MAX_TICKS * 0.625) {
-                setDrive(-.2);
+            while (BackLeftDrive.getCurrentPosition() < DRIVE_MOTOR_MAX_TICKS * 0.625) {
+                setDrive(.2);
             }
             setDrive(0);
             //Sense BCE2
@@ -144,57 +144,71 @@ public class BlueDuck extends LinearOpMode {
                 array[2] = true;
             }
 
+            // Rotate Test
+            resetDriveEncoders();
+            while (BackLeftDrive.getCurrentPosition() < DRIVE_MOTOR_MAX_TICKS * 1.45) {
+                setRotate(-.5);
+            }
+            setRotate(0);
+
             //Forward to wall
             resetDriveEncoders();
-            while (BackLeftDrive.getCurrentPosition() > -DRIVE_MOTOR_MAX_TICKS * 2) {
-                setDrive(-.5);
-            }
-            setDrive(0);
-
-            //Strafe to Duck
-            resetDriveEncoders();
-            while (BackLeftDrive.getCurrentPosition() < DRIVE_MOTOR_MAX_TICKS * 0.95) {
+            while (BackLeftDrive.getCurrentPosition() < DRIVE_MOTOR_MAX_TICKS * 2.25) {
                 setStrafe(.5);
             }
             setStrafe(0);
 
-            //Deliver Duck
-            Duck.setPower(-0.3);
-            sleep(3700);
-            Duck.setPower(0);
-
-            //Forward into wall
+            //Forward to Duck
             resetDriveEncoders();
             while (BackLeftDrive.getCurrentPosition() > -DRIVE_MOTOR_MAX_TICKS * 0.15) {
                 setDrive(-.5);
             }
             setDrive(0);
 
+            //Deliver Duck
+            Duck.setPower(-0.3);
+            sleep(3700);
+            Duck.setPower(0);
+
+            //Strafe into wall
+            resetDriveEncoders();
+            while (BackLeftDrive.getCurrentPosition() < DRIVE_MOTOR_MAX_TICKS * 0.15) {
+                setStrafe(.5);
+            }
+            setStrafe(0);
+
             //Move Back to Cargo Loader
             resetDriveEncoders();
-            while (BackLeftDrive.getCurrentPosition() < DRIVE_MOTOR_MAX_TICKS * 4.2) {
-                setDrive(.5);
+            while (BackLeftDrive.getCurrentPosition() > -DRIVE_MOTOR_MAX_TICKS * 4.8) {
+                setStrafe(-.5);
             }
-            setDrive(0);
+            setStrafe(0);
+
+            //Rotate to Drop off Cargo
+            resetDriveEncoders();
+            while (BackLeftDrive.getCurrentPosition() > -DRIVE_MOTOR_MAX_TICKS * 1.45) {
+                setRotate(.5);
+            }
+            setRotate(0);
 
             if (array[1] == true) {
                 runArm(1, 1100);
                 resetDriveEncoders();
-                while (BackLeftDrive.getCurrentPosition() > -DRIVE_MOTOR_MAX_TICKS * 0.95) {
+                while (BackLeftDrive.getCurrentPosition() > -DRIVE_MOTOR_MAX_TICKS * 0.85) {
                     setStrafe(-.5);
                 }
                 setStrafe(0);
             } else if (array[0] == true) {
                 runArm(1, 400);
                 resetDriveEncoders();
-                while (BackLeftDrive.getCurrentPosition() > -DRIVE_MOTOR_MAX_TICKS * 1.05) {
+                while (BackLeftDrive.getCurrentPosition() > -DRIVE_MOTOR_MAX_TICKS * 0.95) {
                     setStrafe(-.5);
                 }
                 setStrafe(0);
             } else if (array[2] == true) {
                 runArm(1, 1600);
                 resetDriveEncoders();
-                while (BackLeftDrive.getCurrentPosition() > -DRIVE_MOTOR_MAX_TICKS * 1.05) {
+                while (BackLeftDrive.getCurrentPosition() > -DRIVE_MOTOR_MAX_TICKS * 0.95) {
                     setStrafe(-.5);
                 }
                 setStrafe(0);
@@ -215,8 +229,8 @@ public class BlueDuck extends LinearOpMode {
 
             //Move Back to Station
             resetDriveEncoders();
-            while (BackLeftDrive.getCurrentPosition() < DRIVE_MOTOR_MAX_TICKS * 4) {
-                setDrive(.5);
+            while (BackLeftDrive.getCurrentPosition() > -DRIVE_MOTOR_MAX_TICKS * 4) {
+                setDrive(-.5);
             }
             setDrive(0);
             sleep(30000);
@@ -258,6 +272,18 @@ public class BlueDuck extends LinearOpMode {
         FrontLeftDrive.setPower(power);
         FrontRightDrive.setPower(-power);
         BackLeftDrive.setPower(power);
+        BackRightDrive.setPower(-power);
+    }
+
+    //Rotate Right
+    private void setRotate(double power) {
+        FrontLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        FrontRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        BackLeftDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        BackRightDrive.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        FrontLeftDrive.setPower(-power);
+        FrontRightDrive.setPower(-power);
+        BackLeftDrive.setPower(-power);
         BackRightDrive.setPower(-power);
     }
 

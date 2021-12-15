@@ -129,54 +129,36 @@ public class Blue extends LinearOpMode {
 
             //Froward to BCE2
             resetDriveEncoders();
-            while (BackLeftDrive.getCurrentPosition() > -DRIVE_MOTOR_MAX_TICKS * 0.625) {
-                setDrive(-.2);
+            while (BackLeftDrive.getCurrentPosition() < DRIVE_MOTOR_MAX_TICKS * 0.625) {
+                setDrive(.2);
             }
             setDrive(0);
             //Sense BCE2
             if(Distance.getDistance(DistanceUnit.CM) < 20) {
                 array[0] = true;
             }
-            telemetry.addData("Last Location", array[2]);
+            telemetry.addData("Last Location", array[0]);
             telemetry.update();
             //State BCE3
             if(array[1] == false && array[0] == false) {
                 array[2] = true;
             }
 
-            //Forward to wall
+            //Strafing Away From Cargo Loader
             resetDriveEncoders();
-            while (BackLeftDrive.getCurrentPosition() > -DRIVE_MOTOR_MAX_TICKS * 2) {
-                setDrive(-.5);
-            }
-            setDrive(0);
-
-            //Strafe to Duck
-            resetDriveEncoders();
-            while (BackLeftDrive.getCurrentPosition() < DRIVE_MOTOR_MAX_TICKS * 0.95) {
+            while (BackLeftDrive.getCurrentPosition() < DRIVE_MOTOR_MAX_TICKS * 0.8) {
                 setStrafe(.5);
             }
             setStrafe(0);
 
-            //Deliver Duck
-            Duck.setPower(-0.3);
-            sleep(3700);
-            Duck.setPower(0);
-
-            //Forward into wall
+            //Driving Forward to Cargo Loader
             resetDriveEncoders();
-            while (BackLeftDrive.getCurrentPosition() > -DRIVE_MOTOR_MAX_TICKS * 0.15) {
-                setDrive(-.5);
+            while (BackLeftDrive.getCurrentPosition() < DRIVE_MOTOR_MAX_TICKS * 1.2) {
+                setDrive(.2);
             }
             setDrive(0);
 
-            //Move Back to Cargo Loader
-            resetDriveEncoders();
-            while (BackLeftDrive.getCurrentPosition() < DRIVE_MOTOR_MAX_TICKS * 4.2) {
-                setDrive(.5);
-            }
-            setDrive(0);
-
+            //Array to Drop off Cargo
             if (array[1] == true) {
                 runArm(1, 1100);
                 resetDriveEncoders();
@@ -185,7 +167,7 @@ public class Blue extends LinearOpMode {
                 }
                 setStrafe(0);
             } else if (array[0] == true) {
-                runArm(1, 400);
+                runArm(1, 625);
                 resetDriveEncoders();
                 while (BackLeftDrive.getCurrentPosition() > -DRIVE_MOTOR_MAX_TICKS * 1.05) {
                     setStrafe(-.5);
@@ -202,8 +184,8 @@ public class Blue extends LinearOpMode {
 
 
             //Deliver Cargo
-            Grabber.setPower(-.5);
-            sleep(2000);
+            Grabber.setPower(-.6);
+            sleep(2500);
             Grabber.setPower(0);
 
             //Strafe to Wall
@@ -215,10 +197,17 @@ public class Blue extends LinearOpMode {
 
             //Move Back to Station
             resetDriveEncoders();
-            while (BackLeftDrive.getCurrentPosition() < DRIVE_MOTOR_MAX_TICKS * 4) {
-                setDrive(.5);
+            while (BackLeftDrive.getCurrentPosition() > -DRIVE_MOTOR_MAX_TICKS * 4) {
+                setDrive(-.5);
             }
             setDrive(0);
+
+            //Strafing into Warehouse
+            resetDriveEncoders();
+            while (BackLeftDrive.getCurrentPosition() > -DRIVE_MOTOR_MAX_TICKS * 1.95) {
+                setStrafe(-.5);
+            }
+            setStrafe(0);
             sleep(30000);
         }
         sleep(30000);
