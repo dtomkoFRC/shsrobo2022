@@ -129,7 +129,7 @@ public class BlueDuck extends LinearOpMode {
 
             //Froward to BCE2
             resetDriveEncoders();
-            while (BackLeftDrive.getCurrentPosition() < DRIVE_MOTOR_MAX_TICKS * 0.625) {
+            while (BackLeftDrive.getCurrentPosition() < DRIVE_MOTOR_MAX_TICKS * 0.675) {
                 setDrive(.2);
             }
             setDrive(0);
@@ -137,7 +137,7 @@ public class BlueDuck extends LinearOpMode {
             if(Distance.getDistance(DistanceUnit.CM) < 20) {
                 array[0] = true;
             }
-            telemetry.addData("Last Location", array[2]);
+            telemetry.addData("Last Location", array[0]);
             telemetry.update();
             //State BCE3
             if(array[1] == false && array[0] == false) {
@@ -160,13 +160,13 @@ public class BlueDuck extends LinearOpMode {
 
             //Forward to Duck
             resetDriveEncoders();
-            while (BackLeftDrive.getCurrentPosition() > -DRIVE_MOTOR_MAX_TICKS * 0.15) {
+            while (BackLeftDrive.getCurrentPosition() > -DRIVE_MOTOR_MAX_TICKS * 0.5) {
                 setDrive(-.5);
             }
             setDrive(0);
 
             //Deliver Duck
-            Duck.setPower(-0.3);
+            Duck.setPower(0.3);
             sleep(3700);
             Duck.setPower(0);
 
@@ -194,21 +194,21 @@ public class BlueDuck extends LinearOpMode {
             if (array[1] == true) {
                 runArm(1, 1100);
                 resetDriveEncoders();
-                while (BackLeftDrive.getCurrentPosition() > -DRIVE_MOTOR_MAX_TICKS * 0.85) {
+                while (BackLeftDrive.getCurrentPosition() > -DRIVE_MOTOR_MAX_TICKS * 1.05) {
                     setStrafe(-.5);
                 }
                 setStrafe(0);
             } else if (array[0] == true) {
-                runArm(1, 400);
+                runArm(1, 625);
                 resetDriveEncoders();
-                while (BackLeftDrive.getCurrentPosition() > -DRIVE_MOTOR_MAX_TICKS * 0.95) {
+                while (BackLeftDrive.getCurrentPosition() > -DRIVE_MOTOR_MAX_TICKS * 1.15) {
                     setStrafe(-.5);
                 }
                 setStrafe(0);
             } else if (array[2] == true) {
                 runArm(1, 1600);
                 resetDriveEncoders();
-                while (BackLeftDrive.getCurrentPosition() > -DRIVE_MOTOR_MAX_TICKS * 0.95) {
+                while (BackLeftDrive.getCurrentPosition() > -DRIVE_MOTOR_MAX_TICKS * 1) {
                     setStrafe(-.5);
                 }
                 setStrafe(0);
