@@ -208,6 +208,7 @@ public class Red extends LinearOpMode {
                 setStrafe(-.5);
             }
             setStrafe(0);
+            runArm(0.6, 0);
             sleep(30000);
         }
         sleep(30000);

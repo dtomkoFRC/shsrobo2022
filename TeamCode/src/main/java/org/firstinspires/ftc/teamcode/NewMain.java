@@ -27,7 +27,7 @@ public class NewMain extends LinearOpMode {
 // Constants Arm
 static final int ARMUP = 400;
 static final int ARMDOWN = 400;
-static final double ARMPOW = 0.3;
+static final double ARMPOW = 0.4;
 // Constants Turret
 static final int TURRETRIGHT = 50;
 static final int TURRETLEFT = 50;
@@ -82,6 +82,7 @@ static final double TURRETPOW = 0.75;
         // Set inital values for ticks outside of loop
         int armticks = 0;
         int turretticks = 0;
+        double armpower = 0.3;
         
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -103,13 +104,17 @@ static final double TURRETPOW = 0.75;
             // double sidePower = y + r;
             
             // Arm motor movement
-            if (gamepad2.dpad_up)
-            {
+            if (gamepad2.dpad_up) {
                 armticks += ARMUP;
+                armpower = ARMPOW;
                 sleep(500);
-            } else if (gamepad2.dpad_down)
-            {
+            } else if (gamepad2.dpad_down) {
                 armticks -= ARMDOWN;
+                armpower = ARMPOW;
+                sleep(500);
+            } else  if (gamepad2.a) {
+                armticks = 0;
+                armpower = 0.6;
                 sleep(500);
             }
             //telemetry.addData("armticks", armticks);
@@ -118,8 +123,9 @@ static final double TURRETPOW = 0.75;
             //telemetry.addLine("\n").addData("Actual Encoder Pos", ArmMotor.getCurrentPosition());
             //telemetry.update();
             // Arm run command
-            runArm(ARMPOW, armticks);
-            
+            runArm(armpower, armticks);
+
+
 //            // Turret movement
 //            if (gamepad2.dpad_right)
 //            {
@@ -146,7 +152,7 @@ static final double TURRETPOW = 0.75;
             int TurretPosition = Turret.getCurrentPosition();
             //telemetry.addLine("\n").addData("TURRET ENCODER", TurretPosition);
             //telemetry.update();
-            if (gamepad2.left_stick_x > 0 && TurretPosition < 280){
+            if (gamepad2.left_stick_x > 0 && TurretPosition < 290){
                 Turret.setPower(gamepad2.left_stick_x*.25);
                 sleep(10);
             }

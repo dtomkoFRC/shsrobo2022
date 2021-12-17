@@ -219,6 +219,7 @@ public class RedDuck extends LinearOpMode {
                 setDrive(.5);
             }
             setDrive(0);
+            runArm(0.6, 0);
             sleep(30000);
             }
             sleep(30000);
