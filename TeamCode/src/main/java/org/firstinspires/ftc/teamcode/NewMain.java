@@ -32,8 +32,8 @@ static final double ARMPOW = 0.4;
 static final int TURRETRIGHT = 50;
 static final int TURRETLEFT = 50;
 static final double TURRETPOW = 0.75;
+//Dapd Commands
 
-    // Declare OpMode members
     private ElapsedTime runtime = new ElapsedTime();
 
 
@@ -83,7 +83,7 @@ static final double TURRETPOW = 0.75;
         int armticks = 0;
         int turretticks = 0;
         double armpower = 0.3;
-        
+
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
         runtime.reset();
@@ -94,11 +94,30 @@ static final double TURRETPOW = 0.75;
             // Drivetrain control
             // Strafe
             double x = gamepad1.left_stick_x;
-            // Forward
+//            // Forward
             double y = -gamepad1.left_stick_y;
             // Rotate
             double r = gamepad1.right_stick_x;
-            
+            // Forward
+
+            boolean dpadupPreviousState = false;
+            boolean straightForward = false;
+
+//            //Define faster mode
+//            if(gamepad2.dpad_up && !dpadupPreviousState) {
+//                straightForward = !straightForward;
+//            }
+//            if(!straightForward) {
+//                FrontRightDrive.setPower(0.8);
+//                FrontRightDrive.setPower(-0.8);
+//                BackLeftDrive.setPower(0.8);
+//                BackRightDrive.setPower(-0.8);
+//            }
+//            else {
+//                y = -gamepad1.left_stick_y;
+//            }
+
+
             double leftPower = x;
             double rightPower = y - r;
             // double sidePower = y + r;
@@ -117,9 +136,9 @@ static final double TURRETPOW = 0.75;
                 armpower = 0.6;
                 sleep(500);
             }
+
             //telemetry.addData("armticks", armticks);
             //    telemetry.update();
-            ArmMotor.setTargetPosition(armticks);
             //telemetry.addLine("\n").addData("Actual Encoder Pos", ArmMotor.getCurrentPosition());
             //telemetry.update();
             // Arm run command
@@ -152,12 +171,24 @@ static final double TURRETPOW = 0.75;
             int TurretPosition = Turret.getCurrentPosition();
             //telemetry.addLine("\n").addData("TURRET ENCODER", TurretPosition);
             //telemetry.update();
-            if (gamepad2.left_stick_x > 0 && TurretPosition < 290){
-                Turret.setPower(gamepad2.left_stick_x*.25);
-                sleep(10);
+
+            //Clockwise
+            if (gamepad2.left_stick_x > 0 ){
+                if(TurretPosition < 290) {
+                    Turret.setPower(gamepad2.left_stick_x * .25);
+                    sleep(10);
+                }
             }
-            else if(gamepad2.left_stick_x < 0 && TurretPosition > -150){
-                Turret.setPower(gamepad2.left_stick_x*.25);
+            //Counter Clockwise
+            else if(gamepad2.left_stick_x < 0 ){
+                if(TurretPosition > -150 ) {
+                    Turret.setPower(gamepad2.left_stick_x * .25);
+                    sleep(10);
+                }
+            }
+            else if (gamepad2.b){
+                turretticks = 150;
+                runTurret(0.5,turretticks);
                 sleep(10);
             }
             else {
@@ -166,9 +197,10 @@ static final double TURRETPOW = 0.75;
 
             // duck motor
             double d = gamepad2.right_trigger;
-            
-            // grabber 
+
+//            // grabber
             double g = gamepad2.right_stick_y;
+//
             
 
             
@@ -199,11 +231,11 @@ static final double TURRETPOW = 0.75;
             telemetry.update();
 
          //Duck speed limit
-            if(gamepad2.right_trigger > 0.0001) {
-                    Duck.setPower(-0.0001);
+            if(gamepad2.right_trigger > 0.00000001) {
+                    Duck.setPower(-0.00000001);
                 }
                 
-                if(gamepad2.right_trigger < 0.0001) {
+                if(gamepad2.right_trigger < 0.00000001) {
                     Duck.setPower(0);
                 }
 
@@ -240,7 +272,10 @@ static final double TURRETPOW = 0.75;
         Grabber.setPower(power);
     
     }
-    
-    
-   
-}
+    private void runTurret(double power, int position) {
+        Turret.setTargetPosition(position);
+        Turret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        Turret.setPower(power);
+    }
+
+    }
