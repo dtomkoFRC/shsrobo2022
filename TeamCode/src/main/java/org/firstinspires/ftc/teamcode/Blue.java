@@ -106,7 +106,7 @@ public class Blue extends LinearOpMode {
         while (opModeIsActive() && runtime.seconds() > 1.0) {
 
             // Lift ArmMotor
-            runArm(1, 800);
+            runArm(1, 900);
             sleep(500);
 
 
@@ -157,6 +157,10 @@ public class Blue extends LinearOpMode {
                 setDrive(.2);
             }
             setDrive(0);
+            Turret.setTargetPosition(0);
+            Turret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            Turret.setPower(0.75);
+            sleep(10);
 
             //Array to Drop off Cargo
             if (array[1] == true) {
@@ -186,7 +190,7 @@ public class Blue extends LinearOpMode {
             //Deliver Cargo
             Grabber.setPower(-.6);
             sleep(2500);
-            Grabber.setPower(0);
+            Grabber.setPower(0.6);
 
             //Strafe to Wall
             resetDriveEncoders();
@@ -208,6 +212,10 @@ public class Blue extends LinearOpMode {
                 setStrafe(-.5);
             }
             setStrafe(0);
+            Turret.setTargetPosition(0);
+            Turret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            Turret.setPower(0.75);
+            sleep(10);
             runArm(0.6, 0);
             sleep(30000);
         }

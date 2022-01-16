@@ -176,6 +176,10 @@ public class RedDuck extends LinearOpMode {
                 setDrive(.5);
             }
             setDrive(0);
+            Turret.setTargetPosition(0);
+            Turret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            Turret.setPower(0.75);
+            sleep(10);
 
             if (array[0] == true) {
                 runArm(1, 625);
@@ -219,6 +223,10 @@ public class RedDuck extends LinearOpMode {
                 setDrive(.5);
             }
             setDrive(0);
+            Turret.setTargetPosition(0);
+            Turret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            Turret.setPower(0.75);
+            sleep(10);
             runArm(0.6, 0);
             sleep(30000);
             }

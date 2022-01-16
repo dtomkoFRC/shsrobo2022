@@ -160,7 +160,7 @@ public class BlueDuck extends LinearOpMode {
 
             //Forward to Duck
             resetDriveEncoders();
-            while (BackLeftDrive.getCurrentPosition() > -DRIVE_MOTOR_MAX_TICKS * 0.5) {
+            while (BackLeftDrive.getCurrentPosition() > -DRIVE_MOTOR_MAX_TICKS * 0.7) {
                 setDrive(-.5);
             }
             setDrive(0);
@@ -190,6 +190,10 @@ public class BlueDuck extends LinearOpMode {
                 setRotate(.5);
             }
             setRotate(0);
+            Turret.setTargetPosition(0);
+            Turret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            Turret.setPower(0.75);
+            sleep(10);
 
             if (array[1] == true) {
                 runArm(1, 1100);
@@ -233,6 +237,10 @@ public class BlueDuck extends LinearOpMode {
                 setDrive(-.5);
             }
             setDrive(0);
+            Turret.setTargetPosition(0);
+            Turret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            Turret.setPower(0.75);
+            sleep(10);
             runArm(0.6, 0);
             sleep(30000);
         }

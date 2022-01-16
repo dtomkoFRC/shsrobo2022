@@ -126,15 +126,16 @@ static final double TURRETPOW = 0.75;
             if (gamepad2.dpad_up) {
                 armticks += ARMUP;
                 armpower = ARMPOW;
-                sleep(500);
+                sleep(100);
             } else if (gamepad2.dpad_down) {
                 armticks -= ARMDOWN;
                 armpower = ARMPOW;
-                sleep(500);
-            } else  if (gamepad2.a) {
+                sleep(100);
+            }
+                if (gamepad2.a) {
                 armticks = 0;
                 armpower = 0.6;
-                sleep(500);
+                sleep(10);
             }
 
             //telemetry.addData("armticks", armticks);

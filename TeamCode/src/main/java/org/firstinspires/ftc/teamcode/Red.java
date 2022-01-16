@@ -157,6 +157,10 @@ public class Red extends LinearOpMode {
                 setDrive(-.2);
             }
             setDrive(0);
+            Turret.setTargetPosition(0);
+            Turret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            Turret.setPower(0.75);
+            sleep(10);
 
             //Array to Drop off Cargo
             if (array[1] == true) {
@@ -208,6 +212,10 @@ public class Red extends LinearOpMode {
                 setStrafe(-.5);
             }
             setStrafe(0);
+            Turret.setTargetPosition(0);
+            Turret.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            Turret.setPower(0.75);
+            sleep(10);
             runArm(0.6, 0);
             sleep(30000);
         }
